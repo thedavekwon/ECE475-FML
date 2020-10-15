@@ -190,7 +190,7 @@ def stepForwardLogisticRegression(
 
 
 # logisticRegression(X_train, y_train, X_test, y_test)
-logisticRegression(X_train, y_train, X_test, y_test, 0.0001, "L1")
+# logisticRegression(X_train, y_train, X_test, y_test, 0.0001, "L1")
 # logisticRegression(X_train, y_train, X_test, y_test, 0.01, "L2")
 # stepForwardLogisticRegression(X_train, y_train, X_test, y_test, X_val, y_val, column_names)
 
@@ -224,3 +224,28 @@ logisticRegression(X_train, y_train, X_test, y_test, 0.0001, "L1")
 # logisticRegression(X_train, y_train, X_test, y_test, .001, "L1")
 # logisticRegression(X_train, y_train, X_test, y_test, 0.01, "L2")
 # stepForwardLogisticRegression(X_train, y_train, X_test, y_test, X_val, y_val, column_names)
+
+# Multi-Nominal
+from sklearn import datasets
+from sklearn.preprocessing import scale, OneHotEncoder
+
+iris = datasets.load_iris()
+X = iris.data
+y = iris.target.reshape(-1, 1)
+y = OneHotEncoder(sparse=False).fit_transform(X=y)
+
+dataset = np.hstack((np.ones((len(X), 1)), X))
+dataset = np.hstack((dataset, y))
+# # Splitting our data into train (80%), val (10%), and test (10%)
+train, temp = train_test_split(dataset, test_size=0.2, random_state=42)
+test, val = train_test_split(temp, test_size=0.5, random_state=42)
+
+X_train = train[:, :-3]
+y_train = train[:, -3:]
+X_test = test[:, :-3]
+y_test = test[:, -3:]
+X_val = val[:, :-3]
+y_val = val[:, -3:]
+
+print(X_train.shape)
+print(y_train.shape)
